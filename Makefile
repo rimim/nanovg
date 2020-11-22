@@ -89,7 +89,7 @@ $(OUT): $(OBJECTS) | $(DISTDIR)
 
 $(TEMPDIR)/%.o: $(SRCDIR)/%$(SRCEXT) | $(TEMPDIR)
 	@mkdir -p $(@D)
-	$(CXX) $(CLAGS) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CFLAGS) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 
 $(TEMPDIR):
 	@mkdir -p $@

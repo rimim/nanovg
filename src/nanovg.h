@@ -305,6 +305,9 @@ void nvgTranslate(NVGcontext* ctx, float x, float y);
 // Rotates current coordinate system. Angle is specified in radians.
 void nvgRotate(NVGcontext* ctx, float angle);
 
+// Rotates around pivot point in current coordinate system. Angle is specified in radians.
+void nvgRotatePivot(NVGcontext* ctx, float angle, float px, float py);
+
 // Skews the current coordinate system along X axis. Angle is specified in radians.
 void nvgSkewX(NVGcontext* ctx, float angle);
 
@@ -336,6 +339,9 @@ void nvgTransformScale(float* dst, float sx, float sy);
 
 // Sets the transform to rotate matrix. Angle is specified in radians.
 void nvgTransformRotate(float* dst, float a);
+
+// Sets the transform to rotate matrix around pivot. Angle is specified in radians.
+void nvgTransformRotatePivot(float* t, float a, float px, float py);
 
 // Sets the transform to skew-x matrix. Angle is specified in radians.
 void nvgTransformSkewX(float* dst, float a);

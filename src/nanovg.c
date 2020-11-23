@@ -545,6 +545,15 @@ void nvgTransformRotate(float* t, float a)
 	t[4] = 0.0f; t[5] = 0.0f;
 }
 
+void nvgTransformRotatePivot(float* t, float a, float px, float py)
+{
+	float cs = nvg__cosf(a), sn = nvg__sinf(a);
+	t[0] = cs; t[1] = sn;
+	t[2] = -sn; t[3] = cs;
+	t[4] = py * sn - px * cs + px;
+	t[5] = py - sn * px - cs * py;
+}
+
 void nvgTransformSkewX(float* t, float a)
 {
 	t[0] = 1.0f; t[1] = 0.0f;
@@ -731,6 +740,14 @@ void nvgRotate(NVGcontext* ctx, float angle)
 	NVGstate* state = nvg__getState(ctx);
 	float t[6];
 	nvgTransformRotate(t, angle);
+	nvgTransformPremultiply(state->xform, t);
+}
+
+void nvgRotatePivot(NVGcontext* ctx, float angle, float px, float py)
+{
+	NVGstate* state = nvg__getState(ctx);
+	float t[6];
+	nvgTransformRotatePivot(t, angle, px, py);
 	nvgTransformPremultiply(state->xform, t);
 }
 

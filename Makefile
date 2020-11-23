@@ -1,7 +1,7 @@
 CPPSTD :=
 SRCDIR	:= ./src
 SRCEXT	:= .c
-TARGET	:= libnanovg.a
+LIBTARGET	:= libnanovg.a
 SOURCES	:= $(SRCDIR)/nanovg.c
 HEADERS	:= $(SRCDIR)/nanovg.h $(SRCDIR)/nanovg_gl.h $(SRCDIR)/nanovg_gl_utils.h
 ifeq ($(strip $(GL)),2)
@@ -59,11 +59,11 @@ ifneq ($(LOCAL_DIST),)
 DISTDIR	:= $(DISTDIR)/$(LOCAL_DIST)
 endif
 
-ifeq ($(origin TARGET), undefined)
-TARGET	:= $(shell pwd | xargs basename).a
+ifeq ($(origin LIBTARGET), undefined)
+LIBTARGET	:= $(shell pwd | xargs basename).a
 endif
 
-OUT		:= $(DISTDIR)/$(TARGET)
+OUT		:= $(DISTDIR)/$(LIBTARGET)
 
 ifeq ($(origin HEADERS), undefined)
 HEADERS	:= $(shell find -wholename "$(SRCDIR)/*.hpp" && find -wholename "$(SRCDIR)/*.h")
@@ -89,7 +89,7 @@ $(OUT): $(OBJECTS) | $(DISTDIR)
 
 $(TEMPDIR)/%.o: $(SRCDIR)/%$(SRCEXT) | $(TEMPDIR)
 	@mkdir -p $(@D)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CFLAGS) $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 
 $(TEMPDIR):
 	@mkdir -p $@
@@ -111,9 +111,9 @@ distclean: clean
 
 install_all: install install_source
 
-install: $(LIBDIR)/$(TARGET) $(INCLUDE)
+install: $(LIBDIR)/$(LIBTARGET) $(INCLUDE)
 
-$(LIBDIR)/$(TARGET): $(OUT) | $(LIBDIR)
+$(LIBDIR)/$(LIBTARGET): $(OUT) | $(LIBDIR)
 	cp $< $@
 
 $(LIBDIR):
@@ -139,7 +139,7 @@ $(INSTALL_SRCDIR)/%: $(SRCDIR)/% $(COPYRIGHT_DEP)
 uninstall:
 	-rm $(INCLUDE)
 	@rmdir -p $(INCDIRS) 2> /dev/null || true
-	-rm $(LIBDIR)/$(TARGET)
+	-rm $(LIBDIR)/$(LIBTARGET)
 	@rmdir -p $(LIBDIR) 2> /dev/null || true
 	@echo Archives/includes uninstalled!
 

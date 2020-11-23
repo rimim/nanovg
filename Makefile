@@ -98,6 +98,7 @@ $(DISTDIR):
 	@mkdir -p $@
 
 clean:
+	@rm $(OUT) 2> /dev/null || true
 	@rm $(DEPENDS) 2> /dev/null || true
 	@rm $(OBJECTS) 2> /dev/null || true
 	@rmdir -p $(OBJDIRS) 2> /dev/null || true

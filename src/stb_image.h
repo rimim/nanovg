@@ -1031,7 +1031,7 @@ static FILE *stbi__fopen(char const *filename, char const *mode)
    if (0 != fopen_s(&f, filename, mode))
       f=0;
 #else
-   f = fopen(filename, mode);
+   f = (nanovg_fopen != NULL) ? nanovg_fopen(filename, mode) : fopen(filename, mode);
 #endif
    return f;
 }

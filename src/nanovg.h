@@ -19,9 +19,13 @@
 #ifndef NANOVG_H
 #define NANOVG_H
 
+#include <stdio.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern FILE* (*nanovg_fopen)(const char* filename, const char* mode);
 
 #define NVG_PI 3.14159265358979323846264338327f
 
@@ -376,6 +380,7 @@ float nvgRadToDeg(float rad);
 // Creates image by loading it from the disk from specified file name.
 // Returns handle to the image.
 int nvgCreateImage(NVGcontext* ctx, const char* filename, int imageFlags);
+int nvgCreateMaskedImage(NVGcontext* ctx, const char* filename, const char* maskname, int imageFlags);
 
 // Creates image by loading it from the specified chunk of memory.
 // Returns handle to the image.

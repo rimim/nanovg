@@ -825,6 +825,49 @@ int nvgCreateImage(NVGcontext* ctx, const char* filename, int imageFlags)
 	return image;
 }
 
+int nvgCreateMaskedImage(NVGcontext* ctx, const char* filename, const char* maskname, int imageFlags)
+{
+	int w, h, n, mw, mh, mn, image;
+	unsigned char* img;
+	unsigned char* imgmask;
+	stbi_set_unpremultiply_on_load(1);
+	stbi_convert_iphone_png_to_rgb(1);
+	img = stbi_load(filename, &w, &h, &n, 4);
+	printf("img : [%d,%d]\n", w, h);
+	if (img == NULL) {
+		printf("Failed to load %s - %s\n", filename, stbi_failure_reason());
+		return 0;
+	}
+	imgmask = stbi_load(maskname, &mw, &mh, &mn, 4);
+	printf("imgmask : [%d,%d]\n", mw, mh);
+	if (imgmask == NULL) {
+		stbi_image_free(img);
+		printf("Failed to load mask %s - %s\n", maskname, stbi_failure_reason());
+		return 0;
+	}
+	else
+	{
+		unsigned int my;
+        for (my = 0; my < mh; my++)
+        {
+        	unsigned int mx;
+            unsigned char* dst = img + my * w * 4;
+        	unsigned char* src = imgmask + my * mw * 4; 
+            for (mx = 0; mx < mw; mx++)
+            {
+                unsigned char alpha = 255 - src[mx * 4];
+                if (alpha > 0)
+                    dst[mx * 4 + 3] = alpha;
+            }
+        }
+	}
+	stbi_image_free(imgmask);
+
+	image = nvgCreateImageRGBA(ctx, w, h, imageFlags, img);
+	stbi_image_free(img);
+	return image;
+}
+
 int nvgCreateImageMem(NVGcontext* ctx, int imageFlags, unsigned char* data, int ndata)
 {
 	int w, h, n, image;

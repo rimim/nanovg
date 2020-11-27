@@ -35,6 +35,8 @@ extern "C" {
 #endif
 #endif
 
+extern FILE* (*nanovg_fopen)(const char* filename, const char* mode);
+
 // NanoSVG is a simple stupid single-header-file SVG parse. The output of the parser is a list of cubic bezier shapes.
 //
 // The library suits well for anything from rendering scalable icons in your editor application to prototyping a game.
@@ -2945,7 +2947,7 @@ NSVGimage* nsvgParseFromFile(const char* filename, const char* units, float dpi)
 	char* data = NULL;
 	NSVGimage* image = NULL;
 
-	fp = fopen(filename, "rb");
+    fp = (nanovg_fopen != NULL) ? nanovg_fopen(filename, "rb") : fopen(filename, "rb");
 	if (!fp) goto error;
 	fseek(fp, 0, SEEK_END);
 	size = ftell(fp);

@@ -914,7 +914,7 @@ int fonsAddFont(FONScontext* stash, const char* name, const char* path, int font
 	unsigned char* data = NULL;
 
 	// Read in the font data.
-	fp = fopen(path, "rb");
+	fp = (nanovg_fopen != NULL) ? nanovg_fopen(path, "rb") : fopen(path, "rb");
 	if (fp == NULL) goto error;
 	fseek(fp,0,SEEK_END);
 	dataSize = (int)ftell(fp);

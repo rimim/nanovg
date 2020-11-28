@@ -833,13 +833,11 @@ int nvgCreateMaskedImage(NVGcontext* ctx, const char* filename, const char* mask
 	stbi_set_unpremultiply_on_load(1);
 	stbi_convert_iphone_png_to_rgb(1);
 	img = stbi_load(filename, &w, &h, &n, 4);
-	printf("img : [%d,%d]\n", w, h);
 	if (img == NULL) {
 		printf("Failed to load %s - %s\n", filename, stbi_failure_reason());
 		return 0;
 	}
 	imgmask = stbi_load(maskname, &mw, &mh, &mn, 4);
-	printf("imgmask : [%d,%d]\n", mw, mh);
 	if (imgmask == NULL) {
 		stbi_image_free(img);
 		printf("Failed to load mask %s - %s\n", maskname, stbi_failure_reason());
